@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-svc
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  rules:
+    - host: tinyhouse.dev
+      http:
+        paths:
+          - path: /api/?(.*)
+            pathType: 'Prefix'
+            backend:
+              service:
+                name: tinyhouse-server-svc
+                port:
+                  number: 3000
+          - path: /?(.*)
+            pathType: 'Prefix'
+            backend:
+              service:
+                name: tinyhouse-client-svc
+                port:
+                  number: 3000
